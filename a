@@ -4,9 +4,12 @@ function a()
 //code2
 }
 
+function a()
+{
+}
+
 function a2()
 {
   //code 2
   //code 3
-  //code 4
 }
