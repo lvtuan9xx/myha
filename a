@@ -2,3 +2,8 @@ function a()
 {
   //code 1
 }
+
+function a2()
+{
+  //code 2
+}
