@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Nguyễn Mỹ Hà</title>
+  <style>
+    body {
+      background-color: #ffe6e6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden; 
+    }
+
+    .heart-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+    }
+
+    .heart {
+      position: absolute;
+      width: 200px;
+      height: 180px;
+      background: red;
+      transform: rotate(-45deg);
+      top: 10px;
+      left: 0;
+      z-index: 2;
+      animation: pulse 1.5s infinite;
+      display: none; 
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 180px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -100px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 100px;
+      top: 0;
+    }
+
+    .text {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      z-index: 3; 
+      white-space: nowrap; 
+      display: none; 
+    }
+
+    .box {
+	  position: absolute;
+	  width: 150px;
+	  height: 150px;
+	  background-image: url('images.png');
+	  background-size: cover;
+	  background-position: center;  
+	  background-repeat: no-repeat;  
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%) scale(1);
+	  cursor: pointer;
+	  z-index: 1;
+	  background-color: transparent; 
+	  border: none; 
+	}
+
+    /* Pháo hoa nhỏ */
+    .firework {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: #ff3e96;
+      border-radius: 50%;
+      animation: firework 1.5s infinite;
+      opacity: 0;
+      z-index: 4;
+    }
+
+    /* Hiệu ứng phóng ra cho pháo hoa */
+    @keyframes pulse {
+      0% { transform: scale(1) rotate(-45deg); }
+      50% { transform: scale(1.05) rotate(-45deg); }
+      100% { transform: scale(1) rotate(-45deg); }
+    }
+
+    /* Hiệu ứng pháo hoa: Tạo ra sự thay đổi vị trí và màu sắc của pháo hoa */
+    @keyframes firework {
+      0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 1;
+      }
+      25% {
+        transform: translate(var(--x), var(--y)) scale(1.2);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translate(var(--x), var(--y)) scale(1.5);
+        opacity: 0.6;
+      }
+      75% {
+        transform: translate(var(--x), var(--y)) scale(1.8);
+        opacity: 0.3;
+      }
+      100% {
+        transform: translate(var(--x), var(--y)) scale(2);
+        opacity: 0;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="heart-container">
+    <div class="heart" id="heart"></div>
+    <div class="text" id="text">Nguyễn Mỹ Hà</div>
+    <div class="box" id="gift-box" onclick="showHeart(event)"></div>
+  </div>
+
+  <script>
+    // Hàm tạo hiệu ứng pháo hoa
+    function createFireworks() {
+      const fireworkCount = 5;  
+      for (let i = 0; i < fireworkCount; i++) {
+        const firework = document.createElement('div');
+        firework.classList.add('firework');
+        
+        // Tạo các vị trí ngẫu nhiên cho pháo hoa
+        const x = Math.random() * 300 - 150;  // Vị trí X ngẫu nhiên
+        const y = Math.random() * 300 - 150;  // Vị trí Y ngẫu nhiên
+        
+        // Chọn màu pháo hoa ngẫu nhiên cho mỗi lần bắn
+        const colors = ['#ff3e96', '#ff6347', '#00bfff', '#32cd32', '#ff1493', '#ff4500'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        firework.style.backgroundColor = randomColor;
+
+        firework.style.setProperty('--x', `${x}px`);
+        firework.style.setProperty('--y', `${y}px`);
+
+        // Thêm pháo hoa vào trang
+        document.body.appendChild(firework);
+
+        // Xóa pháo hoa sau khi hiệu ứng hoàn tất
+        setTimeout(() => {
+          firework.remove();
+        }, 1500);
+      }
+    }
+
+    // Hàm để hiển thị trái tim và tên khi click vào hộp quà
+    function showHeart(event) {
+      event.stopPropagation(); // Ngăn sự kiện click lan truyền lên các phần tử cha
+
+      // Hiển thị trái tim và tên
+      const heart = document.getElementById('heart');
+      const text = document.getElementById('text');
+
+      heart.style.display = 'block'; // Hiển thị trái tim
+      text.style.display = 'block';  // Hiển thị tên "Nguyễn Mỹ Hà"
+
+      // Tạo hiệu ứng pháo hoa ngay khi hộp quà được click
+      setInterval(createFireworks, 500);  // Pháo hoa bắn liên tục mỗi 0.5 giây
+
+      // Ẩn hộp quà sau khi click
+      const giftBox = document.getElementById('gift-box');
+      giftBox.style.display = 'none'; // Ẩn hộp quà
+    }
+  </script>
+</body>
+</html>
